@@ -1,7 +1,7 @@
 - hosts: all
   pre_tasks:
     # env COMPRESSION=NONE HBASE_HOME=/usr/local/hbase /usr/local/share/opentsdb/tools/create_table.sh
-    # XXX java.net.InetAddress.getLocalHost throws an exception withyout this
+    # XXX java.net.InetAddress.getLocalHost throws an exception without this
     - shell: echo "127.0.0.1 localhost {{ ansible_hostname }}" > /etc/hosts
 
   roles:
