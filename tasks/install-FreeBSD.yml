@@ -1,0 +1,6 @@
+---
+
+- name: install opentsdb
+  pkgng:
+    name: opentsdb
+    state: present

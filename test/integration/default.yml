@@ -1,0 +1,10 @@
+- hosts: all
+  roles:
+    - ansible-role-opentsdb
+  vars:
+    opentsdb_config: |
+      tsd.network.bind = 0.0.0.0
+      tsd.network.port = 4242
+      tsd.http.staticroot = /usr/local/share/opentsdb/static
+      tsd.http.cachedir = {{ opentsdb_tsd_http_cachedir }}
+      tsd.storage.hbase.zk_quorum = localhost

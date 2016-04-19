@@ -1,0 +1,46 @@
+---
+# tasks file for ansible-role-opentsdb
+
+- include_vars: "{{ ansible_os_family }}.yml"
+
+- include: install-FreeBSD.yml
+  when: ansible_os_family == 'FreeBSD'
+
+- name: Create log directory
+  file:
+    path: "{{ opentsdb_log_dir }}"
+    mode: 0755
+    owner: "{{ opentsdb_user }}"
+    group: "{{ opentsdb_group }}"
+    state: directory
+
+- name: Create cache directory
+  file:
+    path: "{{ opentsdb_tsd_http_cachedir }}"
+    mode: 0750
+    owner: "{{ opentsdb_user }}"
+    group: "{{ opentsdb_group }}"
+    state: directory
+
+#- include: configure-FreeBSD.yml
+#  when: ansible_os_family == 'FreeBSD'
+
+- name: Create logback.xml
+  template:
+    src: logback.xml.j2
+    dest: "{{ opentsdb_conf_dir }}/logback.xml"
+  notify: Restart opentsdb
+
+# create xml only if opentsdb_log_config is not empty
+- name: Create opentsdb.conf
+  template:
+    src: opentsdb.conf.j2
+    dest: "{{ opentsdb_conf }}"
+  when: not opentsdb_log_config
+  notify: Restart opentsdb
+
+- name: Start opentsdb
+  service:
+    name: "{{ opentsdb_service }}"
+    enabled: true
+    state: started

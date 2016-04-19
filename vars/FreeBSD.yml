@@ -1,0 +1,3 @@
+---
+__opentsdb_conf_dir: /usr/local/etc/opentsdb
+__opentsdb_conf: "{{ __opentsdb_conf_dir }}/opentsdb.conf"

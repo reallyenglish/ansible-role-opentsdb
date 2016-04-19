@@ -1,0 +1,14 @@
+---
+# defaults file for ansible-role-opentsdb
+opentsdb_user: opentsdb
+opentsdb_group: opentsdb
+opentsdb_log_dir: /var/log/opentsdb
+opentsdb_service: opentsdb
+opentsdb_conf: "{{ __opentsdb_conf }}"
+opentsdb_conf_dir: "{{ __opentsdb_conf_dir }}"
+opentsdb_flags: ""
+
+opentsdb_tsd_http_cachedir: /tmp/opentsdb
+
+opentsdb_config:
+opentsdb_log_config:
