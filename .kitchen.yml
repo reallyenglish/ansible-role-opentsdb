@@ -1,6 +1,9 @@
 ---
 driver:
   name: vagrant
+  customize:
+    # java needs enough memory
+    memory: 1024
 
 provisioner:
   hosts: test-kitchen
@@ -10,6 +13,7 @@ provisioner:
   ansible_verbosity: 1
   ansible_verbose: true
   http_proxy: <%= ENV['ANSIBLE_PROXY'] %>
+  additional_copy_path: extra_roles
 
 platforms:
   - name: freebsd-10.3-amd64

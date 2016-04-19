@@ -1,2 +1,7 @@
 ---
 # vars file for ansible-role-opentsdb
+tsdb_default_table:
+  - tsdb-meta
+  - tsdb-tree
+  - tsdb-uid
+  - tsdb

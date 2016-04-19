@@ -10,5 +10,12 @@ opentsdb_flags: ""
 
 opentsdb_tsd_http_cachedir: /tmp/opentsdb
 
-opentsdb_config:
-opentsdb_log_config:
+opentsdb_config: ""
+opentsdb_log_config: ""
+
+opentsdb_populate_database: true
+opentsdb_hbase_comand: "{{ __opentsdb_hbase_comand }}"
+opentsdb_hbase_flags: ""
+opentsdb_hbase_home: "{{ __opentsdb_hbase_home }}"
+opentsdb_hbase_list_command: "list"
+opentsdb_create_table: "{{ __opentsdb_create_table }}"

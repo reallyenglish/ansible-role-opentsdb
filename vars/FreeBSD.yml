@@ -1,3 +1,6 @@
 ---
 __opentsdb_conf_dir: /usr/local/etc/opentsdb
 __opentsdb_conf: "{{ __opentsdb_conf_dir }}/opentsdb.conf"
+__opentsdb_hbase_comand: /usr/local/hbase/bin/hbase
+__opentsdb_hbase_home: /usr/local/hbase
+__opentsdb_create_table: /usr/local/share/opentsdb/tools/create_table.sh

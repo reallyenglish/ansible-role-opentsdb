@@ -1,31 +1,63 @@
-Role Name
-=========
+ansible-role-opentsdb
+=====================
 
-A brief description of the role goes here.
+Install opentsdb
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+java.net.InetAddress.getLocalHost throws an exception when hostname is not in /etc/hosts or unresolvable. Add a record in /etc/hosts or your DNS.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+| variable | description | default |
+|----------|-------------|---------|
+| opentsdb\_user | user of tsdb | opentsdb |
+| opentsdb\_group | group of tsdb | opentsdb |
+| opentsdb\_log\_dir | path to log dir | /var/log/opentsdb |
+| opentsdb\_service | service name of tsdb | opentsdb |
+| opentsdb\_conf | path to opentsdb.conf | "{{ \_\_opentsdb\_conf }}" |
+| opentsdb\_conf\_dir | path to the config dir | "{{ \_\_opentsdb\_conf\_dir }}" |
+| opentsdb\_flags | not used yet | "" |
+| opentsdb\_tsd\_http\_cachedir | tsd.http.cachedir | /tmp/opentsdb |
+| opentsdb\_config | content of opentsdb.conf | "" |
+| opentsdb\_log\_config | content of logback.xml | "" |
+| opentsdb_populate_database | if true, populate the hbase with create\_table.sh | true |
+| opentsdb\_hbase\_comand | path to habse command | "{{ \_\_opentsdb\_hbase\_comand }}" |
+| opentsdb\_hbase\_flags | a string of flags to pass hbase command | "" |
+| opentsdb\_hbase\_home | env of HBASE\_HOME when running hbase command | "{{ \_\_opentsdb\_hbase\_home }}" |
+| opentsdb\_hbase\_list\_command | a string of command to show list of tables | "list" |
+| opentsdb\_create\_table | path to create\_table.sh bundled with opentsdb | "{{ \_\_opentsdb\_create\_table }}" |
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+- ansible-role-hbase
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
+    - hosts: all
       roles:
-         - { role: username.rolename, x: 42 }
+        - ansible-role-hbase
+        - ansible-role-opentsdb
+      vars:
+        hbase_site_xml: |
+          <property>
+            <name>hbase.rootdir</name>
+            <value>file://{{ hbase_db_dir }}</value>
+          </property>
+          <property>
+            <name>hbase.zookeeper.property.dataDir</name>
+            <value>/var/db/zookeeper</value>
+          </property>
+        opentsdb_config: |
+          tsd.network.bind = 0.0.0.0
+          tsd.network.port = 4242
+          tsd.http.staticroot = /usr/local/share/opentsdb/static
+          tsd.http.cachedir = {{ opentsdb_tsd_http_cachedir }}
+          tsd.storage.hbase.zk_quorum = localhost
 
 License
 -------

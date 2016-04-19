@@ -1,0 +1,6 @@
+---
+
+- name: install hbase
+  pkgng:
+    name: hbase
+    state: present

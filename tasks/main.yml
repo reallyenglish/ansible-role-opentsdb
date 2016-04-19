@@ -22,9 +22,6 @@
     group: "{{ opentsdb_group }}"
     state: directory
 
-#- include: configure-FreeBSD.yml
-#  when: ansible_os_family == 'FreeBSD'
-
 - name: Create logback.xml
   template:
     src: logback.xml.j2
@@ -38,6 +35,19 @@
     dest: "{{ opentsdb_conf }}"
   when: not opentsdb_log_config
   notify: Restart opentsdb
+
+- include: install-hbase-FreeBSD.yml
+  when: ( opentsdb_populate_database ) and ( ansible_os_family == 'FreeBSD' )
+
+- name: Register list output
+  shell: "echo list | {{ opentsdb_hbase_comand }} {{ opentsdb_hbase_flags }} shell -n"
+  register: list_output
+  changed_when: False
+  when: opentsdb_populate_database
+
+- command: "env COMPRESSION=NONE HBASE_HOME={{ opentsdb_hbase_home }} {{ opentsdb_hbase_flags }} {{ opentsdb_create_table }}"
+  with_items: "{{ tsdb_default_table }}"
+  when: not ( list_output.stdout | search(item) ) and ( opentsdb_populate_database )
 
 - name: Start opentsdb
   service:
