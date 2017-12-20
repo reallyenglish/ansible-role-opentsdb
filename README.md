@@ -1,15 +1,12 @@
-ansible-role-opentsdb
-=====================
+# ansible-role-opentsdb
 
 Install opentsdb
 
-Requirements
-------------
+# Requirements
 
 java.net.InetAddress.getLocalHost throws an exception when hostname is not in /etc/hosts or unresolvable. Add a record in /etc/hosts or your DNS.
 
-Role Variables
---------------
+# Role Variables
 
 | variable | description | default |
 |----------|-------------|---------|
@@ -30,14 +27,12 @@ Role Variables
 | opentsdb\_hbase\_list\_command | a string of command to show list of tables | "list" |
 | opentsdb\_create\_table | path to create\_table.sh bundled with opentsdb | "{{ \_\_opentsdb\_create\_table }}" |
 
-Dependencies
-------------
+# Dependencies
 
 - ansible-role-hbase
 
-Example Playbook
-----------------
-
+# Example Playbook
+```yaml
     - hosts: all
       roles:
         - ansible-role-hbase
@@ -58,13 +53,12 @@ Example Playbook
           tsd.http.staticroot = /usr/local/share/opentsdb/static
           tsd.http.cachedir = {{ opentsdb_tsd_http_cachedir }}
           tsd.storage.hbase.zk_quorum = localhost
+```
 
-License
--------
+# License
 
 BSD
 
-Author Information
-------------------
+# Author Information
 
 An optional section for the role authors to include contact information, or a website (HTML is not allowed).
