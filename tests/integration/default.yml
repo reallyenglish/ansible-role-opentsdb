@@ -1,0 +1,25 @@
+- hosts: all
+  pre_tasks:
+    # env COMPRESSION=NONE HBASE_HOME=/usr/local/hbase /usr/local/share/opentsdb/tools/create_table.sh
+    # XXX java.net.InetAddress.getLocalHost throws an exception without this
+    - shell: echo "127.0.0.1 localhost {{ ansible_hostname }}" > /etc/hosts
+
+  roles:
+    - ansible-role-hbase
+    - ansible-role-opentsdb
+  vars:
+    hbase_site_xml: |
+      <property>
+        <name>hbase.rootdir</name>
+        <value>file://{{ hbase_db_dir }}</value>
+      </property>
+      <property>
+        <name>hbase.zookeeper.property.dataDir</name>
+        <value>/var/db/zookeeper</value>
+      </property>
+    opentsdb_config: |
+      tsd.network.bind = 0.0.0.0
+      tsd.network.port = 4242
+      tsd.http.staticroot = /usr/local/share/opentsdb/static
+      tsd.http.cachedir = {{ opentsdb_tsd_http_cachedir }}
+      tsd.storage.hbase.zk_quorum = localhost
