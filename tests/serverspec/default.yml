@@ -5,7 +5,7 @@
     - shell: echo "127.0.0.1 localhost {{ ansible_hostname }}" > /etc/hosts
 
   roles:
-    - ansible-role-hbase
+    - name: reallyenglish.hbase
     - ansible-role-opentsdb
   vars:
     hbase_site_xml: |
